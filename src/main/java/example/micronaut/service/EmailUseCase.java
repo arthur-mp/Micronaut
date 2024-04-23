@@ -1,0 +1,17 @@
+package example.micronaut.service;
+
+import jakarta.inject.Singleton;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+@Singleton
+public class EmailUseCase {
+    private static final Logger LOG = LoggerFactory.getLogger(EmailUseCase.class);
+
+    public void send(String user, String message) {
+        LOG.info("Sending email to {}: {} at {}", user, message, new SimpleDateFormat("dd/M/yyyy hh:mm:ss").format(new Date()));
+    }
+}

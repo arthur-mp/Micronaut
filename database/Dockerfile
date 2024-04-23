@@ -1,0 +1,4 @@
+FROM postgres:latest
+ENV POSTGRES_USER root
+ENV POSTGRES_PASSWORD banco
+ENV POSTGRES_DB micronaut

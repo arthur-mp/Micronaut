@@ -1,0 +1,46 @@
+version: '3.9'
+
+networks:
+  dev:
+    driver: bridge
+
+services:
+  micronaut-app:
+    image: micronaut-app-image
+    depends_on:
+      - "postgresdb"
+    container_name: micronaut-app-container
+    ports:
+      - "8080:8080"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+        DB_USER: root
+        DB_PASSWORD: banco
+        DB_HOST: postgresdb
+        DB_PORT: 5432
+        DB_DATABASE: micronaut
+        DB_POOLING: true
+        DB_CONNECTION_LIFETIME: 0
+        DB_INTEGRATED_SECURITY: true
+    networks:
+      - dev
+
+  postgresdb:
+    image: postgres:latest
+    container_name: postgresdb
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=banco
+      - POSTGRES_DB=micronaut
+    ports:
+      - "5432:5432"
+    restart: always
+    # volumes:
+    #   - postgres-data-api-db:/var/lib/postgresql/data
+    networks:
+      - dev
+
+volumes:
+  postgres-data-api-db:
