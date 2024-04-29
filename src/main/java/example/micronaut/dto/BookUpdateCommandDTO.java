@@ -1,11 +1,11 @@
-package example.micronaut.controller;
+package example.micronaut.dto;
 
 import example.micronaut.domain.Genre;
 import io.micronaut.serde.annotation.Serdeable;
 import jakarta.validation.constraints.NotBlank;
 
 @Serdeable
-public class BookUpdateCommand {
+public class BookUpdateCommandDTO {
 
     private long id;
 
@@ -17,7 +17,7 @@ public class BookUpdateCommand {
 
     private Genre genre;
 
-    public BookUpdateCommand(long id, String name, String isbn, Genre genre) {
+    public BookUpdateCommandDTO(long id, String name, String isbn, Genre genre) {
         this.id = id;
         this.isbn = isbn;
         this.name = name;

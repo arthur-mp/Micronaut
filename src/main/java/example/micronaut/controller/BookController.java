@@ -3,6 +3,8 @@ package example.micronaut.controller;
 import example.micronaut.configuration.SortingAndOrderArguments;
 import example.micronaut.domain.Book;
 import example.micronaut.domain.Genre;
+import example.micronaut.dto.BookSaveCommandDTO;
+import example.micronaut.dto.BookUpdateCommandDTO;
 import example.micronaut.repository.BookRepository;
 import example.micronaut.repository.GenreRepository;
 import io.micronaut.http.HttpResponse;
@@ -38,7 +40,7 @@ class BookController {
     }
 
     @Put
-    HttpResponse<?> update(@Body @Valid BookUpdateCommand command) {
+    HttpResponse<?> update(@Body @Valid BookUpdateCommandDTO command) {
         Genre genre = genreRepository.findById(command.getGenre().getId()).orElse(null);
         int numberOfEntitiesUpdated = bookRepository.update(command.getId(), command.getName(), command.getIsbn(), genre);
 
@@ -53,7 +55,7 @@ class BookController {
     }
 
     @Post
-    HttpResponse<Book> save(@Body @Valid BookSaveCommand cmd) {
+    HttpResponse<Book> save(@Body @Valid BookSaveCommandDTO cmd) {
         Genre genre = genreRepository.findById(cmd.getGenre().getId()).orElse(null);
         Book book = bookRepository.save(cmd.getName(), cmd.getIsbn(), genre);
 
@@ -63,9 +65,9 @@ class BookController {
     }
 
     @Post("/saveList")
-    HttpResponse<List<Book>> saveList(@Body @Valid List<BookSaveCommand> cmd) {
+    HttpResponse<List<Book>> saveList(@Body @Valid List<BookSaveCommandDTO> cmd) {
         List<Book> result = new ArrayList<>();
-        for (BookSaveCommand gsc : cmd) {
+        for (BookSaveCommandDTO gsc : cmd) {
             Genre genre = genreRepository.findById(gsc.getGenre().getId()).orElse(null);
             result.add(bookRepository.save(gsc.getName(), gsc.getIsbn(), genre));
         }
@@ -76,7 +78,7 @@ class BookController {
     }
 
     @Post("/ex")
-    HttpResponse<Book> saveExceptions(@Body @Valid BookSaveCommand cmd) {
+    HttpResponse<Book> saveExceptions(@Body @Valid BookSaveCommandDTO cmd) {
         try {
             Genre genre = genreRepository.findById(cmd.getGenre().getId()).orElse(null);
             Book book = bookRepository.saveWithException(cmd.getName(), cmd.getIsbn(), genre);

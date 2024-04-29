@@ -1,28 +1,17 @@
-package example.micronaut.controller;
+package example.micronaut.dto;
 
 import io.micronaut.serde.annotation.Serdeable;
 
 import jakarta.validation.constraints.NotBlank;
 
 @Serdeable
-public class GenreUpdateCommand {
-
-    private long id;
+public class GenreCommandDTO {
 
     @NotBlank
     private String name;
 
-    public GenreUpdateCommand(long id, String name) {
-        this.id = id;
+    public GenreCommandDTO(String name) {
         this.name = name;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getName() {

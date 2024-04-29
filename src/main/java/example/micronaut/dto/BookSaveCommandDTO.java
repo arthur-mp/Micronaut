@@ -1,11 +1,11 @@
-package example.micronaut.controller;
+package example.micronaut.dto;
 
 import example.micronaut.domain.Genre;
 import io.micronaut.serde.annotation.Serdeable;
 import jakarta.validation.constraints.NotBlank;
 
 @Serdeable
-public class BookSaveCommand {
+public class BookSaveCommandDTO {
 
     @NotBlank
     private String name;
@@ -15,7 +15,7 @@ public class BookSaveCommand {
 
     private Genre genre;
 
-    public BookSaveCommand(String name, String isbn, Genre genre) {
+    public BookSaveCommandDTO(String name, String isbn, Genre genre) {
         this.isbn = isbn;
         this.name = name;
         this.genre = genre;
