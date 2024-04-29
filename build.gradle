@@ -28,6 +28,8 @@ dependencies {
 
     annotationProcessor("io.micronaut.data:micronaut-data-processor")
     implementation("io.micronaut.data:micronaut-data-hibernate-jpa")
+
+    implementation("io.micronaut.elasticsearch:micronaut-elasticsearch")
 }
 
 

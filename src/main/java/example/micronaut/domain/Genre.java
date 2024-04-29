@@ -23,7 +23,7 @@ public class Genre {
 
     @Id
     @GeneratedValue(strategy = AUTO)
-    private Long id;
+    private String id;
 
     @NotNull
     @Column(name = "name", nullable = false, unique = true)
@@ -39,11 +39,11 @@ public class Genre {
         this.name = name;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

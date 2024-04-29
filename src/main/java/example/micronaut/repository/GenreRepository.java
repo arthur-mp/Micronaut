@@ -10,13 +10,13 @@ import java.util.Optional;
 
 public interface GenreRepository {
 
-    Optional<Genre> findById(long id);
+    Optional<Genre> findById(String id);
 
     Genre save(@NotBlank String name);
 
     Genre saveWithException(@NotBlank String name);
 
-    void deleteById(long id);
+    void deleteById(String id);
 
     List<Genre> findAll(@NotNull SortingAndOrderArguments args);
 

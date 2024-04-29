@@ -32,7 +32,7 @@ public class GenreRepositoryImpl implements GenreRepository {
 
     @Override
     @ReadOnly
-    public Optional<Genre> findById(long id) {
+    public Optional<Genre> findById(String id) {
         return Optional.ofNullable(entityManager.find(Genre.class, id));
     }
 
@@ -46,7 +46,7 @@ public class GenreRepositoryImpl implements GenreRepository {
 
     @Override
     @Transactional
-    public void deleteById(long id) {
+    public void deleteById(String id) {
         findById(id).ifPresent(entityManager::remove);
     }
 

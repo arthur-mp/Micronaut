@@ -2,14 +2,12 @@ package example.micronaut.controller;
 
 import example.micronaut.configuration.SortingAndOrderArguments;
 import example.micronaut.domain.Genre;
+import example.micronaut.dto.GenreCommandDTO;
+import example.micronaut.dto.GenreUpdateCommandDTO;
 import example.micronaut.repository.GenreRepository;
+import example.micronaut.repository.elasticsearch.GenreRepositoryES;
 import io.micronaut.http.HttpResponse;
-import io.micronaut.http.annotation.Body;
-import io.micronaut.http.annotation.Controller;
-import io.micronaut.http.annotation.Delete;
-import io.micronaut.http.annotation.Get;
-import io.micronaut.http.annotation.Post;
-import io.micronaut.http.annotation.Put;
+import io.micronaut.http.annotation.*;
 import io.micronaut.scheduling.TaskExecutors;
 import io.micronaut.scheduling.annotation.ExecuteOn;
 
@@ -18,6 +16,7 @@ import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static io.micronaut.http.HttpHeaders.LOCATION;
 
@@ -27,19 +26,20 @@ class GenreController {
 
     private final GenreRepository genreRepository;
 
+
     GenreController(GenreRepository genreRepository) {
         this.genreRepository = genreRepository;
     }
 
     @Get("/{id}")
-    Genre show(Long id) {
+    Genre show(String id) {
         return genreRepository
                 .findById(id)
                 .orElse(null);
     }
 
     @Put
-    HttpResponse<?> update(@Body @Valid GenreUpdateCommand command) {
+    HttpResponse<?> update(@Body @Valid GenreUpdateCommandDTO command) {
         int numberOfEntitiesUpdated = genreRepository.update(command.getId(), command.getName());
 
         return HttpResponse
@@ -53,7 +53,7 @@ class GenreController {
     }
 
     @Post
-    HttpResponse<Genre> save(@Body @Valid GenreSaveCommand cmd) {
+    HttpResponse<Genre> save(@Body @Valid GenreCommandDTO cmd) {
         Genre genre = genreRepository.save(cmd.getName());
 
         return HttpResponse
@@ -62,9 +62,9 @@ class GenreController {
     }
 
     @Post("/saveList")
-    HttpResponse<List<Genre>> saveList(@Body @Valid List<GenreSaveCommand> cmd) {
+    HttpResponse<List<Genre>> saveList(@Body @Valid List<GenreCommandDTO> cmd) {
         List<Genre> result = new ArrayList<>();
-        for (GenreSaveCommand gsc : cmd) {
+        for (GenreCommandDTO gsc : cmd) {
             result.add(genreRepository.save(gsc.getName()));
         }
 
@@ -74,7 +74,7 @@ class GenreController {
     }
 
     @Post("/ex")
-    HttpResponse<Genre> saveExceptions(@Body @Valid GenreSaveCommand cmd) {
+    HttpResponse<Genre> saveExceptions(@Body @Valid GenreCommandDTO cmd) {
         try {
             Genre genre = genreRepository.saveWithException(cmd.getName());
             return HttpResponse
@@ -86,12 +86,16 @@ class GenreController {
     }
 
     @Delete("/{id}")
-    HttpResponse<?> delete(Long id) {
+    HttpResponse<?> delete(String id) {
         genreRepository.deleteById(id);
         return HttpResponse.noContent();
     }
 
     private URI location(Long id) {
+        return URI.create("/genres/" + id);
+    }
+
+    private URI location(String id) {
         return URI.create("/genres/" + id);
     }
 }
